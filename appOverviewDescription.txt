@@ -1,0 +1,37 @@
+Real Estate Offer Creation Application Overview
+I am trying to create a simple application that automates the process of creating offers for Real Estate Agents using AI. My goal right now is to create an MVP to show off the core loop of the application. 
+In this initial MVP I want to create 2 different pages:
+
+Offer List View
+Offer Detail page
+
+Here's a brief overview of what I'm looking to do on each page and then later I also want to give you some additional context on what systems and other tools I want to use.
+
+
+Offer List View:
+* The whole purpose of the offers list view is to show off all of the offers created by that user. This list view needs to have a new button in the top right whicPh will allow real estate agents to start the process of creating a new offer. When they click that new button, it should open a modal. That allows the agent to type in the name of the offer. Once the real estate agent confirms they want to create that new offer in the confirmation model that pops up where they add the name they'll be redirected to the offer detail page where they can actually start working on the offer, which will talk more about later on.
+* It is important to note that if the user is not logged in, we don't want to show the list view and allow the user to click the new button. Instead, this whole section should be a screen"
+* It is important to note that if the user is not logged in, we don't want to show the list view and allow the user to click the new button. Instead, this whole section should be a screen that says to begin generating your AI offers, login, wish you just have a login button form right there.
+* For a technical side I do want to mention that I am using next uS 14 app router so I would like for you to create a side page that fetches all of the offers for the current user and fetches the current user and then passes the offers we find into an offer list view client side component that you should create.
+
+
+Offer Detail Page:
+* The offer detail page is definitely the more complicated page in the group. There are three major components to this page. The first one is going to be the chat component, which should mimic the functionality of ChatGPT or you have a text area at the bottom where you can type in your message and then above that you should be able to view your chat history. Below that there is a file upload section which should allow users to drop in or upload files. In the file upload area or directly next to it there needs to be an auto generate offer button, which is basically going to take in all of the text files and emails that the Real Estate puts in and uses AI plus information to generate an offer. The third major component is going to be the offer area where I will give you a markdown text and it's your job to visualize that down in a nice format. And then finally up top they're just the name of the offer and the ability to save the offer and the ability to export the offer, which should take the markdown offer and convert it to a PDF that is downloaded to the users computer.
+* So here's the important part of the detail page that I haven't mentioned yet as the user talking into the ChatGPT area component we're gonna be using Vail AI so the user goes ahead and send a message such as hey update the listing price of the house to 400,000, need to be sending that message off to our API chat back and endpoint and then we need to set up some other endpoints in our back to accept, openAI function tool calling requests.
+
+* Additionally when the user gets done uploading all of their files and clicks on our generate offer, this should almost behave just like a normal chat request with the user message of read all of this information of raw conversations between me and my client and parse out the important information you need to go off and update the offer accordingly.
+
+Navbar
+I've uploaded a picture of this offer list you so please analyze it and you will notice that I do have a navigation bar on the top which has the name of the application in the top left hand corner called AI offers and in the right hand corner we have a NAV item that says offers which when you click it, it should take you to the list view. Next to that I have a little circle icon which represents the currently logged in user that we're going to find through clerk.
+
+Technologies
+* I'm going to be using next JS 14 and it's super important that you use the app router functionality in the latest version of next JS. Do not use page routers.
+* Tell that I'm gonna be using clerk for authentication and I'm going to be using Vercel AI 
+
+SDK
+* And to save offers and everything else data wise inside of my application I'm going to using the new Vercel postgres database. 
+* I want to use drizzle as the ORM between my Nexus type script application and my databse.
+* When it comes to styling, we're gonna be using tailwind and shacdn.
+
+Styles
+* I want this application to use happy orange colors that are upbeat. I want that to be my primary color. Outside of that I want to use a series of gray black and white for the rest of the colors inside my application.

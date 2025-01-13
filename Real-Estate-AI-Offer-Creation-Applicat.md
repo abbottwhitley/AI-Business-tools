@@ -1,4 +1,4 @@
-# Real Estate AI Offer Creation Application - Master Plan
+# HR Hiring Manager Application - Master Plan
 
 ## 1. Application Architecture
 
@@ -16,8 +16,10 @@
 src/
   ├── app/                    # Next.js App Router
   │   ├── api/               # API Routes
-  │   ├── offers/           # Offer List Page
-  │   └── offers/[id]/      # Offer Detail Page
+  │   ├── jobs/              # Job Postings List Page
+  │   └── jobs/[id]/         # Job Posting Detail Page
+  │   ├── applications/      # Applications List Page
+  │   └── applications/[id]/ # Application Detail Page
   ├── components/            # Reusable Components
   ├── lib/                   # Utility Functions
   └── types/                 # TypeScript Definitions

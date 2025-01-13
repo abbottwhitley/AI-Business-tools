@@ -4,9 +4,9 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 
-const mainNav = [
-  { name: 'AI Hiring Manager', href: '/' },
-]
+// const mainNav = [
+//   { name: 'AI Hiring Manager', href: '/' },
+// ]
 
 const secondaryNav = [
   { name: 'Jobs', href: '/jobs' },

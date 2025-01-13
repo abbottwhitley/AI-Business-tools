@@ -1,15 +1,15 @@
 // import { GeistSans } from 'geist/font/sans'
 // import { GeistMono } from 'geist/font/mono'
-import { Lato } from "next/font/google";
+// import { Lato } from "next/font/google";
 import { cn } from '@/lib/utils'
 import { SiteHeader } from '@/components/site-header'
 import './globals.css'
 
-const lato = Lato({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-roboto",
-});
+// const lato = Lato({
+//   subsets: ["latin"],
+//   weight: ["400", "700"],
+//   variable: "--font-roboto",
+// });
 
 export default function RootLayout({
   children,

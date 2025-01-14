@@ -17,7 +17,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { createJobPosting } from '@/server/create-job-posting'
+import { createJobPosting, updateJobPosting } from '@/server/job-posting-actions'
 import { toast } from "@/hooks/use-toast"
 
 const formSchema = z.object({
@@ -44,12 +44,12 @@ const formSchema = z.object({
   physicalDemand: z.enum(["Light", "Moderate", "Heavy"]),
 })
 
-export function JobPostingForm({ onSuccess }: { onSuccess?: () => void }) {
+export function JobPostingForm({ onSuccess, initialData }: { onSuccess?: (job: any) => void, initialData?: any }) {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
+    defaultValues: initialData || {
       jobTitle: "",
       jobId: "",
       description: "",
@@ -65,20 +65,24 @@ export function JobPostingForm({ onSuccess }: { onSuccess?: () => void }) {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true)
     try {
-      const result = await createJobPosting(values)
+      const result = initialData
+        ? await updateJobPosting(initialData.id, values)
+        : await createJobPosting(values)
       toast({
-        title: "Job Posting Created",
-        description: `Job "${result.jobTitle}" has been successfully created.`,
+        title: initialData ? "Job Posting Updated" : "Job Posting Created",
+        description: `Job "${result.jobTitle}" has been successfully ${initialData ? 'updated' : 'created'}.`,
       })
       if (onSuccess) {
-        onSuccess()
+        onSuccess(result)
       }
-      form.reset()
+      if (!initialData) {
+        form.reset()
+      }
     } catch (error) {
-      console.error('Failed to create job posting:', error)
+      console.error('Failed to submit job posting:', error)
       toast({
         title: "Error",
-        description: "Failed to create job posting. Please try again.",
+        description: `Failed to ${initialData ? 'update' : 'create'} job posting. Please try again.`,
         variant: "destructive",
       })
     } finally {
@@ -232,7 +236,7 @@ export function JobPostingForm({ onSuccess }: { onSuccess?: () => void }) {
           </div>
         </div>
         <Button type="submit" disabled={isSubmitting} className="w-full md:w-auto md:px-12">
-          {isSubmitting ? 'Submitting...' : 'Create Job Posting'}
+          {isSubmitting ? 'Submitting...' : initialData ? 'Update Job Posting' : 'Create Job Posting'}
         </Button>
       </form>
     </Form>

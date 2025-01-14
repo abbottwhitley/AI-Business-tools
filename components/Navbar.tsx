@@ -8,7 +8,7 @@ import { SiAirtel } from "react-icons/si";
 import { SettingsModal } from "@/components/SettingsModal"; // Import the SettingsModal component
 
 const secondaryNav = [
-  { name: 'Job Listing', href: '/job-listing' },
+  { name: 'Job Listings', href: '/job-listings' },
   { name: 'Applicants', href: '/applicants' },
 ]
 

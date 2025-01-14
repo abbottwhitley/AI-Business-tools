@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -19,6 +20,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import Link from 'next/link'
 
 // Mock job listings data
 const mockJobListings = [
@@ -26,36 +28,59 @@ const mockJobListings = [
     id: '1',
     jobTitle: 'Software Engineer',
     jobId: 'SE-001',
-    department: 'Engineering',
-    jobType: 'Full-time',
+    description: 'We are seeking a talented Software Engineer to join our team...',
     payRate: 100000,
+    jobType: 'Full-time',
+    department: 'Engineering',
+    basicQualifications: 'Bachelor\'s degree in Computer Science or related field...',
+    desiredSkills: 'Experience with React, Node.js, and cloud technologies...',
+    workSchedule: 'Monday-Friday, 9AM-5PM',
+    physicalDemand: 'Light',
+    publishedAt: '2023-05-15T10:00:00Z',
   },
   {
     id: '2',
     jobTitle: 'Product Manager',
     jobId: 'PM-001',
-    department: 'Product',
-    jobType: 'Full-time',
+    description: 'We are looking for an experienced Product Manager to lead our product development efforts...',
     payRate: 110000,
+    jobType: 'Full-time',
+    department: 'Product',
+    basicQualifications: 'Bachelor\'s degree in Business, Computer Science, or related field...',
+    desiredSkills: 'Experience with Agile methodologies, product lifecycle management...',
+    workSchedule: 'Monday-Friday, 9AM-5PM',
+    physicalDemand: 'Light',
+    publishedAt: '2023-05-16T09:00:00Z',
   },
   {
     id: '3',
     jobTitle: 'UX Designer',
     jobId: 'UX-001',
-    department: 'Design',
-    jobType: 'Contract',
+    description: 'We are seeking a creative and user-focused UX Designer to join our design team...',
     payRate: 90000,
+    jobType: 'Contract',
+    department: 'Design',
+    basicQualifications: 'Bachelor\'s degree in Design, HCI, or related field...',
+    desiredSkills: 'Proficiency in design tools like Figma, Sketch; experience with user research...',
+    workSchedule: 'Monday-Friday, 10AM-6PM',
+    physicalDemand: 'Light',
+    publishedAt: '2023-05-17T11:00:00Z',
   },
 ]
 
 export default function JobListingsPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [jobListings, setJobListings] = useState(mockJobListings)
+  const router = useRouter()
 
   const handleNewJobPosting = () => {
     setIsDialogOpen(false)
     // In a real application, you would fetch the updated job listings here
     // For now, we'll just close the dialog
+  }
+
+  const handleRowClick = (id: string) => {
+    router.push(`/job-listings/${id}`)
   }
 
   return (
@@ -89,8 +114,20 @@ export default function JobListingsPage() {
         </TableHeader>
         <TableBody>
           {jobListings.map((job) => (
-            <TableRow key={job.id}>
-              <TableCell>{job.jobTitle}</TableCell>
+            <TableRow 
+              key={job.id} 
+              onClick={() => handleRowClick(job.id)}
+              className="cursor-pointer hover:bg-gray-100 transition-colors"
+            >
+              <TableCell>
+                <Link 
+                  href={`/job-listings/${job.id}`} 
+                  className="text-inherit hover:no-underline"
+                  onClick={(e) => e.stopPropagation()} // Prevent row click when clicking the link
+                >
+                  {job.jobTitle}
+                </Link>
+              </TableCell>
               <TableCell>{job.jobId}</TableCell>
               <TableCell>{job.department}</TableCell>
               <TableCell>{job.jobType}</TableCell>

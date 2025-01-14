@@ -1,215 +1,218 @@
-# HR Hiring Manager Application - Master Plan
+# BizWise AI - Application Master Plan
 
-## 1. Application Architecture
+## 1. Application Overview
+BizWise AI is an AI-powered recruitment management system that streamlines the hiring process through automated job posting creation, applicant tracking, and intelligent candidate matching.
 
-### Tech Stack
-- Frontend: Next.js 14 (App Router)
-- Authentication: Clerk
-- Database: PostgreSQL
-- File Storage: AWS S3
-- AI Integration: Vercel AI + OpenAI
-- E-Signature: DocuSign
-- PDF Generation: react-pdf or PDFKit
+### Core Objectives
+- Simplify job posting creation through AI-powered content generation
+- Automate applicant resume parsing and data extraction
+- Provide intelligent candidate-job matching
+- Offer a user-friendly interface for managing the hiring process
 
-### Core Components
-```typescript
-src/
-  ├── app/                    # Next.js App Router
-  │   ├── api/               # API Routes
-  │   ├── jobs/              # Job Postings List Page
-  │   └── jobs/[id]/         # Job Posting Detail Page
-  │   ├── applications/      # Applications List Page
-  │   └── applications/[id]/ # Application Detail Page
-  ├── components/            # Reusable Components
-  ├── lib/                   # Utility Functions
-  └── types/                 # TypeScript Definitions
-```
+### Target Audience
+- HR professionals
+- Hiring managers
+- Recruitment agencies
+- Small to medium-sized businesses
 
-## 2. Data Models
+## 2. Technical Stack
 
-### Offer
-```typescript
-interface Offer {
-  id: string;
-  name: string;
-  createdAt: Date;
-  updatedAt: Date;
-  createdBy: string;
-  status: 'draft' | 'pending' | 'approved' | 'signed';
-  content: string;          // Markdown content
-  version: number;
-  collaborators: string[];  // User IDs
-  metadata: {
-    propertyAddress: string;
-    listingPrice: number;
-    downPayment: number;
-    buyerCommission: number;
-    sellerCommission: number;
-    appraisalDetails: string;
-    inspectionDetails: string;
-  }
-}
-```
+### Frontend
+- Next.js 14 (App Router)
+- Tailwind CSS
+- shadcn/ui components
+- TypeScript
 
-### Chat Message
-```typescript
-interface ChatMessage {
-  id: string;
-  offerId: string;
-  content: string;
-  role: 'user' | 'assistant';
-  timestamp: Date;
-  userId: string;
-}
-```
+### Backend & Infrastructure
+- Next.js API routes
+- Vercel AI SDK
+- Vercel Postgres
+- Drizzle ORM
+- Clerk Authentication
 
-### File Upload
-```typescript
-interface UploadedFile {
-  id: string;
-  offerId: string;
-  fileName: string;
-  fileType: string;
-  s3Key: string;
-  uploadedBy: string;
-  uploadedAt: Date;
-}
-```
+### Color Palette
+- Primary Blue: #4285F4
+- Secondary Blue: #1A73E8
+- Light Blue: #E8F0FE
+- White: #FFFFFF
+- Light Gray: #F8F9FA
+- Medium Gray: #70757A
+- Dark Gray: #202124
+- Black: #000000
 
-### Audit Log
-```typescript
-interface AuditLog {
-  id: string;
-  offerId: string;
-  userId: string;
-  action: 'view' | 'edit' | 'create' | 'delete';
-  timestamp: Date;
-  details: string;
-}
-```
+## 3. Core Features
 
-## 3. Key Features Implementation
+### Authentication & Authorization (Clerk)
+- User registration and login
+- Role-based access control
+- Session management
 
-### Authentication Flow
-1. Implement Clerk authentication
-2. Protected routes for authenticated users
-3. Redirect unauthorized users to login
+### Job Listings Management
+- AI-powered job posting creation from:
+  - File uploads (PDF, Word, text)
+  - URL scraping
+  - Manual input with AI enhancement
+- Structured job data fields:
+  - Job ID
+  - Title
+  - Department
+  - Description
+  - Pay Rate
+  - Job Type
+  - Basic Qualifications
+  - Desired Skills
+  - Work Schedule
+  - Physical Demands
+  - Published Date
+- Version history tracking
+- Custom fields support
+- Bulk actions (delete, export)
 
-### Offer List View
-1. Server-side fetching of offers
-2. Client-side offer list component
-3. New offer creation modal
-4. Basic offer metadata display
+### Applicant Management
+- AI-powered resume parsing
+- Automatic data extraction from:
+  - PDF files
+  - Word documents
+  - Text files
+- Kanban and list views
+- Predefined status stages:
+  - New
+  - Interviewing
+  - Reviewed
+  - Rejected
+  - Offered
+  - Accepted
 
-### Offer Detail Page
-1. Chat Component
-   - Message input
-   - Chat history display
-   - AI integration via Vercel AI
-   - Persistent chat history
+### AI Matching System
+- Automatic candidate-job matching
+- Detailed matching criteria display
+- Match percentage breakdown by categories
+- No minimum threshold requirement
+- Automatic matching for new applicants
 
-2. File Upload Section
-   - Drag-and-drop interface
-   - Multiple file type support
-   - S3 integration
-   - Progress indicators
+### Offer Generation
+- Email template generation
+- Offer letter creation
+- Customizable templates
+- Preview and edit capabilities
 
-3. Offer Display
-   - Markdown rendering
+## 4. User Interface
+
+### Pages
+1. Landing Page
+   - Value proposition
+   - Get Started button
+   - Feature highlights
+   - Pricing information
+
+2. Dashboard
+   - Quick statistics
+   - Recent activities
+   - Important notifications
+
+3. Job Listings Page
+   - List/table view
+   - Create New button
+   - Search and filters
+   - Bulk actions
+
+4. Job Detail Page
+   - Complete job information
+   - Edit capabilities
+   - Matched candidates list
    - Version history
-   - Collaborative editing
-   - PDF export functionality
 
-### AI Integration
-1. Document Processing
-   - Automatic information extraction
-   - Structured review interface
-   - Approval workflow
+5. Applicants List Page
+   - List and Kanban views
+   - Status tracking
+   - Search and filters
+   - Add New button
 
-2. Chat Commands
-   - Update listing price
-   - Modify terms
-   - Update commissions
-   - Edit property details
+6. Applicant Detail Page
+   - Complete profile
+   - Matched jobs
+   - Status updates
+   - Document preview
 
-### DocuSign Integration
-1. Document preparation
-2. Signature request flow
-3. Status tracking
-4. Completion notifications
+## 5. Pricing Tiers
 
-## 4. API Endpoints
+### Free Tier
+- Up to 5 active job postings
+- Up to 25 applicant profiles
+- Basic AI matching
+- Standard templates
+- Email support
 
-### Offers
-```typescript
-POST /api/offers                 // Create new offer
-GET /api/offers                  // List offers
-GET /api/offers/:id              // Get offer details
-PUT /api/offers/:id              // Update offer
-DELETE /api/offers/:id           // Delete offer
-```
+### Professional Tier ($49/month)
+- Up to 25 active job postings
+- Up to 100 applicant profiles
+- Advanced AI matching
+- Custom templates
+- Priority support
+- Bulk actions
+- Advanced analytics
 
-### Chat
-```typescript
-POST /api/offers/:id/chat        // Send message
-GET /api/offers/:id/chat         // Get chat history
-```
+### Enterprise Tier ($199/month)
+- Unlimited job postings
+- Unlimited applicant profiles
+- Custom AI training
+- API access
+- Dedicated support
+- Custom features
+- Advanced security
 
-### Files
-```typescript
-POST /api/offers/:id/files       // Upload file
-GET /api/offers/:id/files        // List files
-DELETE /api/offers/:id/files/:fileId // Delete file
-```
+## 6. Development Phases
 
-### AI
-```typescript
-POST /api/ai/extract            // Extract document info
-POST /api/ai/generate           // Generate offer
-POST /api/ai/update             // Update offer content
-```
+### Phase 1: MVP (4-6 weeks)
+- Basic authentication
+- Job posting CRUD
+- Applicant CRUD
+- Basic AI integration
+- Essential UI components
 
-## 5. Implementation Phases
+### Phase 2: Enhanced Features (4-6 weeks)
+- Advanced AI matching
+- Template generation
+- Kanban view
+- Search and filters
+- Basic analytics
 
-### Phase 1: Foundation
-- Basic Next.js setup
-- Authentication implementation
-- Database setup
-- Basic offer CRUD operations
+### Phase 3: Premium Features (4-6 weeks)
+- Custom fields
+- Version history
+- Bulk actions
+- Advanced analytics
+- API development
 
-### Phase 2: Core Features
-- Offer list view
-- Basic offer detail page
-- File upload functionality
-- Simple chat interface
-
-### Phase 3: AI Integration
-- Document processing
-- Information extraction
-- Chat commands
-- Offer generation
-
-### Phase 4: Advanced Features
-- PDF export
-- DocuSign integration
-- Version control
-- Audit logging
-
-### Phase 5: Polish
-- UI/UX improvements
-- Performance optimization
-- Error handling
-- Testing
-
-## 6. Security Considerations
-- Implement proper role-based access
-- Secure file uploads
-- API rate limiting
-- Audit logging
+## 7. Security Considerations
+- Clerk authentication implementation
 - Data encryption at rest
+- Secure file handling
+- Rate limiting
+- Input validation
+- GDPR compliance
+- Regular security audits
 
-## 7. Monitoring and Analytics
-- Error tracking
-- User activity monitoring
-- Performance metrics
-- AI usage analytics
+## 8. Future Considerations
+- Mobile application
+- Advanced AI features
+- Integration with ATS systems
+- Calendar integration
+- Video interview integration
+- Multi-language support
+- Advanced reporting
+
+## 9. Success Metrics
+- User engagement rates
+- AI accuracy rates
+- Conversion rates
+- User satisfaction scores
+- System performance metrics
+- Revenue metrics
+
+## 10. Potential Challenges & Solutions
+- AI accuracy: Implement feedback loop
+- Scale handling: Cloud infrastructure
+- User adoption: Intuitive UI/UX
+- Data privacy: Regular audits
+- Performance: Optimization strategies

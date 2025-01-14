@@ -31,3 +31,20 @@ export async function createJobPosting(data: z.infer<typeof jobPostingSchema>) {
   return result
 }
 
+export async function updateJobPosting(id: string, data: z.infer<typeof jobPostingSchema>) {
+  const validatedData = jobPostingSchema.parse(data)
+  
+  // Simulate a delay
+  await new Promise(resolve => setTimeout(resolve, 1000))
+  
+  // Mock database update
+  const result = {
+    id,
+    ...validatedData,
+    updatedAt: new Date().toISOString(),
+  }
+
+  console.log('Job posting updated:', result)
+  return result
+}
+

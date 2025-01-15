@@ -60,7 +60,7 @@ export function SettingsModal({ children }: { children: React.ReactNode }) {
             />
           </div>
           <div className="mt-6 flex justify-end">
-            <Button variant="primary" onClick={() => setIsOpen(false)}>
+            <Button variant="default" onClick={() => setIsOpen(false)}>
               Save
             </Button>
           </div>

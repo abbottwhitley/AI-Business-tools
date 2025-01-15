@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogTrigger, DialogTitle, DialogDescription } 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-export function SettingsModal() {
+export function SettingsModal({ children }: { children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
   const [field1, setField1] = useState("");
   const [field2, setField2] = useState("");
@@ -14,7 +14,7 @@ export function SettingsModal() {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Settings</Button>
+        {children}
       </DialogTrigger>
       <DialogContent>
         <DialogTitle>Settings</DialogTitle>
@@ -69,3 +69,4 @@ export function SettingsModal() {
     </Dialog>
   );
 }
+

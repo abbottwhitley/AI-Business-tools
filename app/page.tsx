@@ -1,64 +1,77 @@
 'use client'
 
-import { useEffect, useState } from 'react';
-// import { useRouter } from 'next/router';
-import { SignInButton, useAuth } from '@clerk/nextjs';
+import { useState, useEffect } from 'react';
 import { CheckCircle } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { AnimatedBackground } from '@/components/AnimatedBackground';
 
 export default function HomePage() {
-  const { isSignedIn } = useAuth();
-  // const router = useRouter();
+  const [isSignedIn, setIsSignedIn] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const router = useRouter();
 
-  // useEffect(() => {
-  //   setIsMounted(true);
-  // }, []);
+  useEffect(() => {
+    setIsMounted(true);
+    const checkAuth = () => {
+      const isAuth = localStorage.getItem('isSignedIn') === 'true';
+      setIsSignedIn(isAuth);
+      if (isAuth) {
+        router.push('/dashboard');
+      }
+    };
+    checkAuth();
+  }, [router]);
 
-  // useEffect(() => {
-  //   if (isMounted && isSignedIn) {
-  //     router.push('/dashboard');
-  //   }
-  // }, [isMounted, isSignedIn, router]);
+  if (!isMounted) {
+    return null;
+  }
 
-  // if (!isMounted) {
-  //   return null; // Prevent rendering on the server side
-  // }
+  const handleSignIn = () => {
+    localStorage.setItem('isSignedIn', 'true');
+    setIsSignedIn(true);
+    router.push('/dashboard');
+  };
 
   return (
-    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="flex justify-center items-center h-screen">
-        {isSignedIn ? (
-          <p>Redirecting to your dashboard...</p>
-        ) : (
-          <div className="text-center mt-[-40vh]"> {/* Adjust the margin-top to raise the header */}
-            <h1 className="text-4xl font-bold mb-6">Bizwise AI - Optimizing hiring operations with AI and business insights</h1>
-            <p className="text-xl text-gray-600 mb-8">
-              Efficiently manage and track applicants for your job postings
-            </p>
-              <SignInButton>
-              <button className="transition-colors hover:text-foreground/80 bg-blue-500 text-white px-4 py-2 rounded">
+    <main className="relative min-h-screen overflow-hidden">
+      <AnimatedBackground />
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex justify-center items-center min-h-screen">
+          {isSignedIn ? (
+            <p className="text-blue-600 text-xl">Redirecting to your dashboard...</p>
+          ) : (
+            <div className="text-center">
+              <h1 className="text-5xl font-bold mb-6 text-blue-600 animate-fade-in-up">Bizwise AI</h1>
+              <p className="text-2xl text-green-600 mb-8 animate-fade-in-up animation-delay-300">
+                Optimizing hiring operations with AI and business insights
+              </p>
+              <button
+                onClick={handleSignIn}
+                className="transition-all duration-300 hover:scale-105 bg-blue-500 text-white px-8 py-3 rounded-full text-lg font-semibold shadow-lg hover:shadow-xl animate-fade-in-up animation-delay-600"
+              >
                 Get Started Free
               </button>
-            </SignInButton>
-              <p className="text-sm text-gray-500">No credit card required</p>
+              <p className="text-sm text-green-600 mt-4 animate-fade-in-up animation-delay-900">No credit card required</p>
 
-              <div className="pt-8 flex items-center justify-center gap-8">
+              <div className="pt-12 flex items-center justify-center gap-8 animate-fade-in-up animation-delay-1200">
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="text-blue-500 h-5 w-5" />
-                  <span className="text-gray-600">AI-Powered</span>
+                  <CheckCircle className="text-blue-500 h-6 w-6" />
+                  <span className="text-green-600">AI-Powered</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="text-blue-500 h-5 w-5" />
-                  <span className="text-gray-600">Instant Results</span>
+                  <CheckCircle className="text-blue-500 h-6 w-6" />
+                  <span className="text-green-600">Instant Results</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle className="text-blue-500 h-5 w-5" />
-                  <span className="text-gray-600">Free to Try</span>
+                  <CheckCircle className="text-blue-500 h-6 w-6" />
+                  <span className="text-green-600">Free to Try</span>
                 </div>
               </div>
-          </div>
-        )}
+            </div>
+          )}
+        </div>
       </div>
     </main>
   );
 }
+

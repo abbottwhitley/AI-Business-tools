@@ -18,14 +18,11 @@ export const JobListings = pgTable("job_listings", {
   description: text("description"),
   payRate: numeric("pay_rate").notNull(),
 	JobType: text("job_id").notNull(),
-  publishedAt: timestamp("published_at").notNull(),
-  department: text("department").notNull(),
 	basicQualifications: text("basic_qualifications").notNull(),
 	desiredSkills: text("desired_skills").notNull(),
-	experienceLevel: text("experience_level").notNull(),
-	shift: text("shift").notNull(),
 	workSchedule: text("work_schedule").notNull(),
   physicalDemand: text("physical_demand").notNull(),
+  publishedAt: timestamp("published_at").notNull(),
 });
 
 

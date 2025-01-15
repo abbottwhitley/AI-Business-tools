@@ -11,6 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { AnimatedBackground } from '@/components/AnimatedBackground'
+import { LoadingDialog } from '@/components/LoadingDialog'
 
 export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(true)
@@ -26,7 +27,7 @@ export default function DashboardPage() {
   }, [router])
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return <LoadingDialog />
   }
 
   return (

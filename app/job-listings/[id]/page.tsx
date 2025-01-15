@@ -15,6 +15,7 @@ import { JobPostingForm } from '@/components/job-posting-form'
 import { updateJobPosting } from '@/app/server/job-posting-actions'
 import { AIMatchingResults } from '@/components/ai-matching-results'
 import { AnimatedBackground } from '@/components/AnimatedBackground'
+import { LoadingDialog } from '@/components/LoadingDialog'
 
 const mockJobListings = [
   {
@@ -63,7 +64,7 @@ const mockJobListings = [
 
 const fetchJobDetails = async (id: string) => {
   // In a real application, this would be an API call
-  await new Promise(resolve => setTimeout(resolve, 500)) // Simulate API delay
+  await new Promise(resolve => setTimeout(resolve, 1500)) // Simulate API delay
   const job = mockJobListings.find(job => job.id === id)
   if (!job) {
     throw new Error('Job not found')
@@ -75,12 +76,18 @@ export default function JobDetailPage({ params }: { params: { id: string } }) {
   const router = useRouter()
   const [job, setJob] = useState<any>(null)
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
+    setIsLoading(true)
     fetchJobDetails(params.id)
-      .then(setJob)
+      .then(fetchedJob => {
+        setJob(fetchedJob)
+        setIsLoading(false)
+      })
       .catch(error => {
         console.error('Failed to fetch job details:', error)
+        setIsLoading(false)
         notFound()
       })
   }, [params.id])
@@ -91,8 +98,12 @@ export default function JobDetailPage({ params }: { params: { id: string } }) {
     setIsEditDialogOpen(false)
   }
 
+  if (isLoading) {
+    return <LoadingDialog />
+  }
+
   if (!job) {
-    return <div>Loading...</div>
+    return notFound()
   }
 
   return (

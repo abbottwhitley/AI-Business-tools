@@ -17,8 +17,8 @@ import {
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { createJobPosting, updateJobPosting } from '@/app/server/job-posting-actions'
-import { toast } from "@/hooks/use-toast"
+import { createJobPosting, updateJobPosting } from '@/server/job-posting-actions'
+import { useToast } from "@/hooks/use-toast"
 
 const formSchema = z.object({
   jobTitle: z.string().min(2, {
@@ -46,6 +46,7 @@ const formSchema = z.object({
 
 export function JobPostingForm({ onSuccess, initialData }: { onSuccess?: (job: any) => void, initialData?: any }) {
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const { toast } = useToast()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -68,6 +69,7 @@ export function JobPostingForm({ onSuccess, initialData }: { onSuccess?: (job: a
       const result = initialData
         ? await updateJobPosting(initialData.id, values)
         : await createJobPosting(values)
+      console.log('Job posting submission result:', result)
       toast({
         title: initialData ? "Job Posting Updated" : "Job Posting Created",
         description: `Job "${result.jobTitle}" has been successfully ${initialData ? 'updated' : 'created'}.`,
@@ -80,9 +82,13 @@ export function JobPostingForm({ onSuccess, initialData }: { onSuccess?: (job: a
       }
     } catch (error) {
       console.error('Failed to submit job posting:', error)
+      let errorMessage = 'An unexpected error occurred. Please try again.'
+      if (error instanceof Error) {
+        errorMessage = error.message
+      }
       toast({
         title: "Error",
-        description: `Failed to ${initialData ? 'update' : 'create'} job posting. Please try again.`,
+        description: `Failed to ${initialData ? 'update' : 'create'} job posting: ${errorMessage}`,
         variant: "destructive",
       })
     } finally {

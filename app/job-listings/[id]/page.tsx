@@ -12,7 +12,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { JobPostingForm } from '@/components/job-posting-form'
-import { updateJobPosting } from '@/app/server/job-posting-actions'
+import { updateJobPosting } from '@/server/job-posting-actions'
 import { AIMatchingResults } from '@/components/ai-matching-results'
 import { AnimatedBackground } from '@/components/AnimatedBackground'
 import { LoadingDialog } from '@/components/LoadingDialog'
